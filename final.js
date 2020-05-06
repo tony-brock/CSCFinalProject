@@ -8,26 +8,16 @@ var RecalculateScales = function(money, lengths)
         return entry.Income
     };
     var Incomes = money.map(getIncomes);
-    console.log("Incomes", Incomes);
-//make scores an array   
-    var getThree = function(entry)
-    {
-        return entry.Big_Three
-    };
-    var big_Three = money.map(getThree);
-    console.log("Big Three", big_Three);
-//make self rates an array
-    var getFinance = function(entry)
-    {
-        return entry.Financial_Matters
-    };
-    var finance = money.map(getFinance);
-    console.log("Financial Matters Scores", finance);
-    
+
+//make scales    
     var xBase = d3.scaleBand()
             .domain(Incomes)
-            .range([0,lengths.graph.width])
+            .range([50,lengths.graph.width-50])
             .paddingInner(.5);
+    
+    var xLine = d3.scaleLinear()
+            .domain([Incomes])
+            .range([50,lengths.graph.width-50]);
     
     var y1 = d3.scaleLinear()
             .domain([0,1])
@@ -40,10 +30,11 @@ var RecalculateScales = function(money, lengths)
     return {xBase:xBase, y1:y1, y2:y2};
 };
 
-var updateGraph = function(target,money,lengths, Incomes, big_Three, Finance)
+var updateGraph = function(target,money,lengths)
 {
     var scales = RecalculateScales(money,lengths);
-    var xBase = scales.xBase;
+    var xBase = scales.xBase
+    var xLine = scales.xLine
     var y1 = scales.y1;
     var y2 = scales.y2;
     
@@ -54,13 +45,13 @@ var updateGraph = function(target,money,lengths, Incomes, big_Three, Finance)
         .append("g")
         .attr("id", "big_Three")
         .selectAll("rect")
-        .data(money)
-    //might need accessor
+        .data(money);
+
     rectsThree.enter()
-        .append("rect")
+        .append("rect");
     
     rectsThree.exit()
-        .remove()
+        .remove();
     
     d3.select(target)
         .select(".graph #big_Three")
@@ -69,7 +60,7 @@ var updateGraph = function(target,money,lengths, Incomes, big_Three, Finance)
         .duration(500)
         .attr("x", function(entry)
              {
-                return xBase(entry.Income)+6
+                return xBase(entry.Income)-8
             })
         .attr("y", function(entry)
             {
@@ -82,20 +73,59 @@ var updateGraph = function(target,money,lengths, Incomes, big_Three, Finance)
             })
         .attr("rx", 2)
         .attr("ry", 2)
-        .attr("fill", "green") 
+        .attr("fill", "rgb(0,204,0)")
+        .attr("stroke", "black");   
+    
+   
+    var rectsFive = d3.select(target)
+        .select(".graph")
+        .append("g")
+        .attr("id", "big_Five")
+        .selectAll("rect")
+        .data(money);
+    
+    rectsFive.enter()
+        .append("rect");
+    
+    rectsFive.exit()
+        .remove();
+    
+    d3.select(target)
+        .select(".graph #big_Five")
+        .selectAll("rect")
+        .transition()
+        .duration(dur)
+        .attr("x", function(entry)
+             {
+                return xBase(entry.Income)+12
+            })
+        .attr("y", function(entry)
+            {
+                return y1(entry.Big_Five)
+            })
+        .attr("width", 20)
+        .attr("height", function(entry)
+            {
+                return lengths.graph.height - y1(entry.Big_Five);
+            })
+        .attr("rx", 2)
+        .attr("ry", 2)
+        .attr("fill", "rgb(102,204,0)")
+        .attr("stroke", "black");   
+
     
     rectsFin = d3.select(target)
         .select(".graph")
         .append("g")
         .attr("id", "financial")
         .selectAll("rect")
-        .data(money)
-    //might need accessor
+        .data(money);
+
     rectsFin.enter()
-        .append("rect")
+        .append("rect");
     
     rectsFin.exit()
-        .remove()
+        .remove();
     
     d3.select(target)
         .select(".graph #financial")
@@ -104,7 +134,7 @@ var updateGraph = function(target,money,lengths, Incomes, big_Three, Finance)
         .duration(500)
         .attr("x", function(entry)
                     {
-                        return xBase(entry.Income)+27
+                        return xBase(entry.Income)+32
                     })
         .attr("y", function(entry)
                     {
@@ -117,8 +147,47 @@ var updateGraph = function(target,money,lengths, Incomes, big_Three, Finance)
                     })
         .attr("rx", 2)
         .attr("ry", 2)
-        .attr("fill", "orange") 
-//        .attr("tranform", "translate("100+")")
+        .attr("fill", "rgb(102,178,255)") 
+        .attr("stroke", "black");   
+
+    
+    
+    rectsKnow = d3.select(target)
+        .select(".graph")
+        .append("g")
+        .attr("id", "knowledge")
+        .selectAll("rect")
+        .data(money);
+    
+    rectsKnow.enter()
+        .append("rect");
+    
+    rectsKnow.exit()
+        .remove();
+    
+    d3.select(target)
+        .select(".graph #knowledge")
+        .selectAll("rect")
+        .transition()
+        .duration(500)
+        .attr("x", function(entry)
+                    {
+                        return xBase(entry.Income)+52
+                    })
+        .attr("y", function(entry)
+                    {
+                        return y2(entry.Financial_Knowledge)
+                    })
+        .attr("width", 20)
+        .attr("height", function(entry)
+                    {
+                        return lengths.graph.height - y2(entry.Financial_Knowledge);
+                    })
+        .attr("rx", 2)
+        .attr("ry", 2)
+        .attr("fill", "rgb(153,204,255)")
+        .attr("stroke", "black");   
+
 };
 
 var createLabels = function(lengths,target)
@@ -154,7 +223,7 @@ var createLabels = function(lengths,target)
         .classed("label",true)
         .attr("text-anchor","middle")
         .attr("transform","rotate(270)")
-        .attr("stroke", "orange")
+        .attr("stroke", "blue")
     
     labels.append("g")
         .attr("id", "xAxisLabel")
@@ -164,6 +233,16 @@ var createLabels = function(lengths,target)
         .classed("title", true)
         .attr("text-anchor", "middle")
 };
+
+var createLegend = function(lengths, target)
+{
+    var legend = d3.select(target)
+        .append("g")
+        .classed("legend", true)
+        .attr("transform", "translate("+(lengths.margins.left+10)+","+(lengths.margins.top+10)+")")
+    
+    var entries = legend.selectAll("g")
+}
     
 var initAxes = function(lengths, target)
 {
@@ -185,7 +264,7 @@ var initAxes = function(lengths, target)
     axes.append("g")
         .attr("id", "rightAxis")
         .attr("transform", "translate("+(lengths.margins.left+lengths.graph.width)+","+(lengths.margins.top)+")")
-        .attr("stroke", "orange")
+        .attr("stroke", "blue")
 };
 
 var updateAxes = function(target,xBase,y1,y2)
@@ -212,8 +291,8 @@ var updateAxes = function(target,xBase,y1,y2)
 
 var initGraph = function(target, money)
 {
-    var screen = {width:900, height:400}
-    var margins = {top:25, bottom:40, left:75, right:75}
+    var screen = {width:1200, height:600}
+    var margins = {top:30, bottom:40, left:75, right:75}
     var graph = 
     {
         width:screen.width-margins.left-margins.right,
@@ -239,10 +318,6 @@ var initGraph = function(target, money)
     createLabels(lengths,target);
 };
 
-var Incomes = function(money)
-{
-    return money.Incomes
-}
 
 
 var tablePromise = d3.csv("IncomeData.csv")
