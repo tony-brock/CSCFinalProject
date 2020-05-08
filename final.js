@@ -15,10 +15,6 @@ var RecalculateScales = function(money, lengths)
             .range([50,lengths.graph.width-50])
             .paddingInner(.5);
     
-    var xLine = d3.scaleLinear()
-            .domain([Incomes])
-            .range([50,lengths.graph.width-50]);
-    
     var y1 = d3.scaleLinear()
             .domain([0,1])
             .range([lengths.graph.height,0]);
