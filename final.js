@@ -1,6 +1,6 @@
 var dur = 500;
 
-var RecalculateScales = function(money, lengths)
+var RecalculateScalesHist = function(money, lengths)
 {
 //make Incomes an array
     var getIncomes = function(entry)
@@ -15,26 +15,25 @@ var RecalculateScales = function(money, lengths)
             .range([50,lengths.graph.width-50])
             .paddingInner(.5);
     
-    var y1 = d3.scaleLinear()
+    var y1Hist = d3.scaleLinear()
             .domain([0,1])
             .range([lengths.graph.height,0]);
     
-    var y2 = d3.scaleLinear()
+    var y2Hist = d3.scaleLinear()
             .domain([1,7])
             .range([lengths.graph.height,0]);
     
-    return {xBase:xBase, y1:y1, y2:y2};
+    return {xBase:xBase, y1Hist:y1Hist, y2Hist:y2Hist};
 };
 
 var updateGraph = function(target,money,lengths)
 {
-    var scales = RecalculateScales(money,lengths);
+    var scales = RecalculateScalesHist(money,lengths);
     var xBase = scales.xBase
-    var xLine = scales.xLine
-    var y1 = scales.y1;
-    var y2 = scales.y2;
+    var y1 = scales.y1Hist;
+    var y2 = scales.y2Hist;
     
-    updateAxes(target,xBase,y1,y2)
+    updateAxesHist(target,xBase,y1,y2);
     
     var rectsThree = d3.select(target)
         .select(".graph")
@@ -69,7 +68,7 @@ var updateGraph = function(target,money,lengths)
             })
         .attr("rx", 2)
         .attr("ry", 2)
-        .attr("fill", "rgb(0,204,0)")
+        .attr("fill", "#b2df8a")
         .attr("stroke", "black");   
     
    
@@ -106,7 +105,7 @@ var updateGraph = function(target,money,lengths)
             })
         .attr("rx", 2)
         .attr("ry", 2)
-        .attr("fill", "rgb(102,204,0)")
+        .attr("fill", "#33a02c")
         .attr("stroke", "black");   
 
     
@@ -143,7 +142,7 @@ var updateGraph = function(target,money,lengths)
                     })
         .attr("rx", 2)
         .attr("ry", 2)
-        .attr("fill", "rgb(102,178,255)") 
+        .attr("fill", "#1f78b4") 
         .attr("stroke", "black");   
 
     
@@ -181,7 +180,7 @@ var updateGraph = function(target,money,lengths)
                     })
         .attr("rx", 2)
         .attr("ry", 2)
-        .attr("fill", "rgb(153,204,255)")
+        .attr("fill", "#a6cee3")
         .attr("stroke", "black");   
 
 };
@@ -230,17 +229,8 @@ var createLabels = function(lengths,target)
         .attr("text-anchor", "middle")
 };
 
-var createLegend = function(lengths, target)
-{
-    var legend = d3.select(target)
-        .append("g")
-        .classed("legend", true)
-        .attr("transform", "translate("+(lengths.margins.left+10)+","+(lengths.margins.top+10)+")")
     
-    var entries = legend.selectAll("g")
-}
-    
-var initAxes = function(lengths, target)
+var initAxesHist = function(lengths, target)
 {
     var axes = d3.select(target)
         .append("g")
@@ -263,11 +253,11 @@ var initAxes = function(lengths, target)
         .attr("stroke", "blue")
 };
 
-var updateAxes = function(target,xBase,y1,y2)
+var updateAxesHist = function(target,xBase,y1Hist,y2Hist)
 {
     var xAxis = d3.axisBottom(xBase)
-    var yLeft = d3.axisLeft(y1)
-    var yRight = d3.axisRight(y2)
+    var yLeft = d3.axisLeft(y1Hist)
+    var yRight = d3.axisRight(y2Hist)
     
     d3.select("#xAxis")
         .transition()
@@ -285,10 +275,10 @@ var updateAxes = function(target,xBase,y1,y2)
         .call(yRight)
 }
 
-var initGraph = function(target, money)
+var initHist = function(target, money)
 {
-    var screen = {width:1200, height:600}
-    var margins = {top:30, bottom:40, left:75, right:75}
+    var screen = {width:1500, height:600}
+    var margins = {top:30, bottom:40, left:75, right:420}
     var graph = 
     {
         width:screen.width-margins.left-margins.right,
@@ -309,7 +299,7 @@ var initGraph = function(target, money)
         .classed("graph", true)
         .attr("transform", "translate("+margins.left+","+margins.top+")");
     
-    initAxes(lengths, target);
+    initAxesHist(lengths, target);
     updateGraph(target, money, lengths);
     createLabels(lengths,target);
 };
@@ -324,7 +314,7 @@ tablePromise.then(function(money)
     console.log(money[0].Big_Three);
     console.log(money[0].Financial_Matters);
     console.log(money.columns[0]);
-    initGraph("svg",money);
+    initHist("svg",money);
 },
 function(err)
 {

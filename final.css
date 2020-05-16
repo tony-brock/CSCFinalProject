@@ -3,5 +3,13 @@ svg {
 }
 
 body {
-    background-color: aliceblue
+    background-color: #F0FFF0
+}
+
+#threeTooltip {
+    position:absolute
+}
+
+.off, .fade {
+    opacity: .1
 }
