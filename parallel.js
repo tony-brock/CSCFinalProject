@@ -703,16 +703,30 @@ var initLineGraph = function(target, money)
     drawxLines(target, money, lengths);
     updateCircles(target,money,lengths);
     legend(target,lengths);
+};
+
+var clearLines = function(target,money)
+{
+    d3.selectAll("circle line")
+        .exit()
+        .remove()
 }
 
 
 var setButtons = function(target,money,legnths)
 {
     d3.select("#histogramButton")
-        .on("click", initHist);
+        .on("click", function()
+            {
+                initHist(target,money)
+                clearLines(target, money)
+            });
     
     d3.select("#pLineButton")
-        .on("click", initLineGraph);
+        .on("click", function()
+            {
+                initLineGraph(target,money);
+            });
 };
 
 
