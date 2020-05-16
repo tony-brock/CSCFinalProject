@@ -1,5 +1,7 @@
 svg {
-    align-self: center
+    align-self: center;
+    float:left;
+    clear:left;
 }
 
 body {
@@ -12,4 +14,13 @@ body {
 
 .off, .fade {
     opacity: .1
+}
+
+head {
+    height:30px;
+}
+
+h1 {
+    text-align: center; 
+    margin-left:-230px;
 }
