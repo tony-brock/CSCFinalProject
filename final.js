@@ -41,6 +41,7 @@ var updateLines = function(target, money, lengths)
           {
             return y1Line(entry.Big_Three)
         })
+
     
     var lineGeneratorFive = d3.line()
         .x(function(entry)
@@ -51,6 +52,7 @@ var updateLines = function(target, money, lengths)
           {
             return y1Line(entry.Big_Five)
         })
+
     
     var lineGeneratorKnow = d3.line()
         .x(function(entry)
@@ -61,6 +63,7 @@ var updateLines = function(target, money, lengths)
           {
             return y2Line(entry.Financial_Knowledge)
         })
+
     
     var lineGeneratorMat = d3.line()
         .x(function(entry)
@@ -71,6 +74,7 @@ var updateLines = function(target, money, lengths)
           {
             return y2Line(entry.Financial_Matters)
         })
+
     
     
     var lineThree = d3.select(target)
@@ -78,6 +82,7 @@ var updateLines = function(target, money, lengths)
         .append("g")
         .attr("id", "big_ThreeLine")
         .classed("line", true)
+        .classed("hidden", false)
         .selectAll("path")
         .data(money)
     
@@ -97,8 +102,7 @@ var updateLines = function(target, money, lengths)
         .attr("fill", "none")
         .attr("stroke", "#b2df8a")
         .attr("stroke-width", "4")
-        .attr("transform", "translate("+63+")");
-    
+        .attr("transform", "translate("+63+")");    
     
     
     var lineFive = d3.select(target)
@@ -106,6 +110,7 @@ var updateLines = function(target, money, lengths)
         .append("g")
         .attr("id", "big_FiveLine")
         .classed("line", true)
+        .classed("hidden", false)
         .selectAll("path")
         .data(money);
     
@@ -125,7 +130,7 @@ var updateLines = function(target, money, lengths)
         .attr("fill", "none")
         .attr("stroke", "#33a02c")
         .attr("stroke-width", "4")
-        .attr("transform", "translate("+63+")")
+        .attr("transform", "translate("+63+")");
     
     
     var lineKnow = d3.select(target)
@@ -133,6 +138,7 @@ var updateLines = function(target, money, lengths)
         .append("g")
         .attr("id", "KnowLine")       
         .classed("line", true)
+        .classed("hidden", false)
         .selectAll("path")
         .data(money);
     
@@ -160,6 +166,7 @@ var updateLines = function(target, money, lengths)
         .append("g")
         .attr("id", "MatLine")
         .classed("line", true)
+        .classed("hidden", false)
         .selectAll("path")
         .data(money);
     
@@ -695,6 +702,8 @@ var initLineGraph = function(target, money)
     var g = d3.select(target)
         .append("g")
         .classed("graph", true)
+        .attr("id", "lines")
+        .classed("hidden", false)
         .attr("transform", "translate("+ lengths.margins.left + "," + lengths.margins.top + ")");
     
     createLabels(lengths,target)
@@ -705,26 +714,42 @@ var initLineGraph = function(target, money)
     legend(target,lengths);
 };
 
-var clearLines = function(target,money)
+var clearPath = function(target, money)
 {
-    d3.selectAll("circle line")
-        .exit()
-        .remove()
+    d3.selectAll("path")
+        .remove();
+}
+var clearCircle = function(target,money)
+{
+    d3.selectAll("circle")
+        .remove();
+}
+var clearLines = function(target, money)
+{
+    d3.selectAll("line")
+        .remove();
+}
+var clearRect = function(target,money)
+{
+    d3.selectAll("rect")
+        .remove();
 }
 
-
-var setButtons = function(target,money,legnths)
+var setButtons = function(target, money)
 {
     d3.select("#histogramButton")
         .on("click", function()
-            {
-                initHist(target,money)
-                clearLines(target, money)
+            {               
+                clearPath(target,money);
+                clearCircle(target,money);
+                clearLines(target,money);
+                initHist(target, money);
             });
     
     d3.select("#pLineButton")
         .on("click", function()
             {
+                clearRect(target,money);
                 initLineGraph(target,money);
             });
 };
@@ -757,7 +782,7 @@ var RecalculateScalesHist = function(money, lengths)
     return {xBase:xBase, y1Hist:y1Hist, y2Hist:y2Hist};
 };
 
-var updateGraph = function(target,money,lengths)
+var updateRects = function(target,money,lengths)
 {
     var scales = RecalculateScalesHist(money,lengths);
     var xBase = scales.xBase
@@ -783,7 +808,7 @@ var updateGraph = function(target,money,lengths)
         .select(".graph #big_Three")
         .selectAll("rect")
         .transition()
-        .duration(500)
+        .duration(dur)
         .attr("x", function(entry)
              {
                 return xBase(entry.Income)-8
@@ -857,7 +882,7 @@ var updateGraph = function(target,money,lengths)
         .select(".graph #financial")
         .selectAll("rect")
         .transition()
-        .duration(500)
+        .duration(dur)
         .attr("x", function(entry)
                     {
                         return xBase(entry.Income)+32
@@ -895,7 +920,7 @@ var updateGraph = function(target,money,lengths)
         .select(".graph #knowledge")
         .selectAll("rect")
         .transition()
-        .duration(500)
+        .duration(dur)
         .attr("x", function(entry)
                     {
                         return xBase(entry.Income)+52
@@ -986,19 +1011,19 @@ var initHist = function(target, money)
         .attr("transform", "translate("+margins.left+","+margins.top+")");
     
     initAxesHist(lengths, target);
-    updateGraph(target, money, lengths);
+    updateRects(target, money, lengths);
     createLabels(lengths,target);
 };
 
 
 
 var tablePromise = d3.csv("IncomeData.csv")
-tablePromise.then(function(money, target)
+tablePromise.then(function(money)
 {
     console.log("money", money);
     initLineGraph("svg", money);
     console.log(money.columns[1]);
-    setButtons(target,money);
+    setButtons("svg",money);
 },
 function(err)
 {
