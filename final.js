@@ -205,7 +205,9 @@ var updateCircles = function(target, money, lengths)
         .data(money);
     
     threeCircle.enter()
-        .append("circle");
+        .append("circle")
+        .attr("cx", 0)
+        .attr("cy", 300);
     
     threeCircle.exit()
         .remove();
@@ -236,7 +238,9 @@ var updateCircles = function(target, money, lengths)
         .data(money);
     
     fiveCircle.enter()
-        .append("circle");
+        .append("circle")
+        .attr("cx", 0)
+        .attr("cy", 300);
     
     fiveCircle.exit()
         .remove();
@@ -267,7 +271,9 @@ var updateCircles = function(target, money, lengths)
         .data(money);
     
     knowCircle.enter()
-        .append("circle");
+        .append("circle")
+        .attr("cx", 0)
+        .attr("cy", 300);
     
     knowCircle.exit()
         .remove();
@@ -297,7 +303,9 @@ var updateCircles = function(target, money, lengths)
         .data(money);
     
     matCircle.enter()
-        .append("circle");
+        .append("circle")
+        .attr("cx", 0)
+        .attr("cy", 600);
     
     matCircle.exit()
         .remove();
@@ -487,7 +495,11 @@ var drawxLines = function(target, money, lengths)
         .data(money);
     
     lineOne.enter()
-        .append("line");
+        .append("line")
+        .attr("x1", (lengths.graph.width/2))
+        .attr("x2", (lengths.graph.width/2))
+        .attr("y1", 0)
+        .attr("y2", 0);
     
     lineOne.exit()
         .remove();
@@ -513,6 +525,10 @@ var drawxLines = function(target, money, lengths)
     
     lineTwo.enter()
         .append("line")
+        .attr("x1", (lengths.graph.width/2))
+        .attr("x2", (lengths.graph.width/2))
+        .attr("y1", 0)
+        .attr("y2", 0);
     
     lineTwo.exit()
         .remove()
@@ -538,6 +554,10 @@ var drawxLines = function(target, money, lengths)
     
     lineThree.enter()
         .append("line")
+        .attr("x1", (lengths.graph.width/2))
+        .attr("x2", (lengths.graph.width/2))
+        .attr("y1", 0)
+        .attr("y2", 0);
     
     lineThree.exit()
         .remove()
@@ -563,6 +583,10 @@ var drawxLines = function(target, money, lengths)
     
     lineFour.enter()
         .append("line")
+        .attr("x1", (lengths.graph.width/2))
+        .attr("x2", (lengths.graph.width/2))
+        .attr("y1", 0)
+        .attr("y2", 0);
     
     lineFour.exit()
         .remove()
@@ -588,6 +612,10 @@ var drawxLines = function(target, money, lengths)
     
     lineFive.enter()
         .append("line")
+        .attr("x1", (lengths.graph.width/2))
+        .attr("x2", (lengths.graph.width/2))
+        .attr("y1", 0)
+        .attr("y2", 0);
     
     lineFive.exit()
         .remove()
@@ -613,6 +641,10 @@ var drawxLines = function(target, money, lengths)
     
     lineSix.enter()
         .append("line")
+        .attr("x1", (lengths.graph.width/2))
+        .attr("x2", (lengths.graph.width/2))
+        .attr("y1", 0)
+        .attr("y2", 0);
     
     lineSix.exit()
         .remove()
@@ -638,6 +670,10 @@ var drawxLines = function(target, money, lengths)
     
     lineSeven.enter()
         .append("line")
+        .attr("x1", (lengths.graph.width/2))
+        .attr("x2", (lengths.graph.width/2))
+        .attr("y1", 0)
+        .attr("y2", 0);
     
     lineSeven.exit()
         .remove()
@@ -663,6 +699,10 @@ var drawxLines = function(target, money, lengths)
     
     lineEight.enter()
         .append("line")
+        .attr("x1", (lengths.graph.width/2))
+        .attr("x2", (lengths.graph.width/2))
+        .attr("y1", 0)
+        .attr("y2", 0);
     
     lineEight.exit()
         .remove()
@@ -702,6 +742,7 @@ var initLineGraph = function(target, money)
     var g = d3.select(target)
         .append("g")
         .classed("graph", true)
+        .classed("pLines", true)
         .attr("id", "lines")
         .classed("hidden", false)
         .attr("transform", "translate("+ lengths.margins.left + "," + lengths.margins.top + ")");
@@ -714,35 +755,23 @@ var initLineGraph = function(target, money)
     legend(target,lengths);
 };
 
-var clearPath = function(target, money)
+var clearpLines = function(target, money)
 {
-    d3.selectAll("path")
-        .remove();
-}
-var clearCircle = function(target,money)
-{
-    d3.selectAll("circle")
-        .remove();
-}
-var clearLines = function(target, money)
-{
-    d3.selectAll("line")
+    d3.selectAll(".pLines")
         .remove();
 }
 var clearRect = function(target,money)
 {
-    d3.selectAll("rect")
+    d3.selectAll(".barChart")
         .remove();
 }
 
 var setButtons = function(target, money)
 {
-    d3.select("#histogramButton")
+    d3.select("#barChartButton")//barChart
         .on("click", function()
             {               
-                clearPath(target,money);
-                clearCircle(target,money);
-                clearLines(target,money);
+                clearpLines(target,money);
                 initHist(target, money);
             });
     
@@ -768,7 +797,7 @@ var RecalculateScalesHist = function(money, lengths)
 //make scales    
     var xBase = d3.scaleBand()
             .domain(Incomes)
-            .range([50,lengths.graph.width-50])
+            .range([20,lengths.graph.width-20])
             .paddingInner(.5);
     
     var y1Hist = d3.scaleLinear()
@@ -792,14 +821,16 @@ var updateRects = function(target,money,lengths)
     updateAxesHist(target,xBase,y1,y2);
     
     var rectsThree = d3.select(target)
-        .select(".graph")
+        .select(".barChart")
         .append("g")
         .attr("id", "big_Three")
         .selectAll("rect")
         .data(money);
 
     rectsThree.enter()
-        .append("rect");
+        .append("rect")
+        .attr("x", 600)
+        .attr("y", 650);
     
     rectsThree.exit()
         .remove();
@@ -825,18 +856,41 @@ var updateRects = function(target,money,lengths)
         .attr("rx", 2)
         .attr("ry", 2)
         .attr("fill", "#b2df8a")
-        .attr("stroke", "black");   
+        .attr("stroke", "black")
+        .on("click", function(money)
+            {
+                var on = d3.select("#big_Three")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select("#big_Three")
+                            .classed("off", true);
+                        d3.selectAll("rect")
+                            .classed("off", true);
+                    }
+                else
+                    {
+                        d3.select("#big_Three")
+                            .classed("off", false);
+                        d3.selectAll("rect")
+                            .classed("off", false);
+                    };
+            });
+
     
    
     var rectsFive = d3.select(target)
-        .select(".graph")
+        .select(".barChart")
         .append("g")
         .attr("id", "big_Five")
         .selectAll("rect")
         .data(money);
     
     rectsFive.enter()
-        .append("rect");
+        .append("rect")
+        .attr("x", 600)
+        .attr("y", 650);
     
     rectsFive.exit()
         .remove();
@@ -866,14 +920,16 @@ var updateRects = function(target,money,lengths)
 
     
     rectsFin = d3.select(target)
-        .select(".graph")
+        .select(".barChart")
         .append("g")
         .attr("id", "financial")
         .selectAll("rect")
         .data(money);
 
     rectsFin.enter()
-        .append("rect");
+        .append("rect")
+        .attr("x", 600)
+        .attr("y", 650);
     
     rectsFin.exit()
         .remove();
@@ -904,14 +960,16 @@ var updateRects = function(target,money,lengths)
     
     
     rectsKnow = d3.select(target)
-        .select(".graph")
+        .select(".barChart")
         .append("g")
         .attr("id", "knowledge")
         .selectAll("rect")
         .data(money);
     
     rectsKnow.enter()
-        .append("rect");
+        .append("rect")        
+        .attr("x", 600)
+        .attr("y", 650);
     
     rectsKnow.exit()
         .remove();
@@ -1008,11 +1066,11 @@ var initHist = function(target, money)
     var g = d3.select(target)
         .append("g")
         .classed("graph", true)
+        .classed("barChart", true)
         .attr("transform", "translate("+margins.left+","+margins.top+")");
     
     initAxesHist(lengths, target);
     updateRects(target, money, lengths);
-    createLabels(lengths,target);
 };
 
 

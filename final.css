@@ -5,22 +5,30 @@ svg {
 }
 
 body {
-    background-color: #F0FFF0
+    background-color: #F0FFF0;
 }
 
 #threeTooltip {
-    position:absolute
+    position:absolute;
 }
 
-.off, .fade {
-    opacity: .1
+.off {
+    opacity: .1;
+}
+
+.fade {
+    opacity: .1;
 }
 
 head {
-    height:30px;
+    height:50px;
 }
 
 h1 {
     text-align: center; 
-    margin-left:-230px;
+    margin-left:-250px;
+}
+
+rect:hover {
+    opacity:.3;
 }
