@@ -838,25 +838,6 @@ var updateRects = function(target,money,lengths)
     d3.select(target)
         .select(".graph #big_Three")
         .selectAll("rect")
-        .transition()
-        .duration(dur)
-        .attr("x", function(entry)
-             {
-                return xBase(entry.Income)-8
-            })
-        .attr("y", function(entry)
-            {
-                return y1(entry.Big_Three)
-            })
-        .attr("width", 20)
-        .attr("height", function(entry)
-            {
-                return lengths.graph.height - y1(entry.Big_Three);
-            })
-        .attr("rx", 2)
-        .attr("ry", 2)
-        .attr("fill", "#b2df8a")
-        .attr("stroke", "black")
         .on("click", function(money)
             {
                 var on = d3.select("#big_Three")    
@@ -876,7 +857,26 @@ var updateRects = function(target,money,lengths)
                         d3.selectAll("rect")
                             .classed("off", false);
                     };
-            });
+            })
+        .transition()
+        .duration(dur)
+        .attr("x", function(entry)
+             {
+                return xBase(entry.Income)-8
+            })
+        .attr("y", function(entry)
+            {
+                return y1(entry.Big_Three)
+            })
+        .attr("width", 20)
+        .attr("height", function(entry)
+            {
+                return lengths.graph.height - y1(entry.Big_Three);
+            })
+        .attr("rx", 2)
+        .attr("ry", 2)
+        .attr("fill", "#b2df8a")
+        .attr("stroke", "black")
 
     
    
