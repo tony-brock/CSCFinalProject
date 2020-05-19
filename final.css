@@ -13,7 +13,7 @@ body {
 }
 
 .off {
-    opacity: .1;
+    opacity: .2;
 }
 
 .fade {
@@ -27,8 +27,46 @@ head {
 h1 {
     text-align: center; 
     margin-left:-250px;
+    font-family:monospace;
+    font-size:30px;
 }
 
 rect:hover {
     opacity:.3;
 }
+
+#big_ThreeLine:hover, #big_FiveLine:hover, #knowLine:hover, #matLine:hover {
+    opacity:.3
+}
+
+text {
+    font-size: 13px;
+    font-family: 'Inconsolata', monospace;
+}
+
+g#leftLabel text {
+    font-size: 17px;
+}
+
+g#rightLabel text  {
+    font-size: 17px;
+}
+
+g#xAxisLabel text {
+    font-size:17px;
+}
+
+g#graphtitle text {
+    font-size: 21px;
+}
+
+text.threelegend, text.fiveLegend, text.knowLegend, text.matLegend, text.finLegend {
+    font-size:13.35px;
+    font-family: 'Inconsolata', monospace;
+}
+
+
+
+
+
+

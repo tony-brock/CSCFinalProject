@@ -96,11 +96,31 @@ var updateLines = function(target, money, lengths)
         .select(".graph #big_ThreeLine")
         .selectAll("path")
         .datum(money)
+        .on("click", function(money)
+            {
+                var on = d3.select("#big_ThreeLine, #threeCircle")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select("#big_ThreeLine, #threeCircle")
+                            .classed("off", false);
+                        d3.selectAll("#big_FiveLine, #KnowLine, #MatLine, #fiveCircle, #knowCircle, #matCircle")
+                            .classed("off", false);
+                    }
+                else
+                    {
+                        d3.select("#big_ThreeLine, #threeCircle")
+                            .classed("off", false);
+                        d3.selectAll("#big_FiveLine, #KnowLine, #MatLine, #fiveCircle, #knowCircle, #matCircle")
+                            .classed("off", true);
+                    };
+            })
         .transition()
         .duration(dur)
         .attr("d", lineGeneratorThree)
         .attr("fill", "none")
-        .attr("stroke", "#b2df8a")
+        .attr("stroke", "#5DCD47")
         .attr("stroke-width", "4")
         .attr("transform", "translate("+63+")");    
     
@@ -124,11 +144,31 @@ var updateLines = function(target, money, lengths)
         .select(".graph #big_FiveLine")
         .selectAll("path")
         .datum(money)
+        .on("click", function(money)
+            {
+                var on = d3.select("#big_FiveLine")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select("#big_FiveLine, #fiveCircle")
+                            .classed("off", false);
+                        d3.selectAll("#big_ThreeLine, #KnowLine, #MatLine, #threeCircle, #knowCircle, #matCircle")
+                            .classed("off", false);
+                    }
+                else
+                    {
+                        d3.select("#big_FiveLine, #fiveCircle")
+                            .classed("off", false);
+                        d3.selectAll("#big_ThreeLine, #KnowLine, #MatLine, #threeCircle, #knowCircle, #matCircle")
+                            .classed("off", true);
+                    };
+            })
         .transition()
         .duration(dur)
         .attr("d", lineGeneratorFive)
         .attr("fill", "none")
-        .attr("stroke", "#33a02c")
+        .attr("stroke", "#098400")
         .attr("stroke-width", "4")
         .attr("transform", "translate("+63+")");
     
@@ -184,7 +224,7 @@ var updateLines = function(target, money, lengths)
         .duration(dur)
         .attr("d", lineGeneratorMat)
         .attr("fill", "none")
-        .attr("stroke", "#a6cee3")
+        .attr("stroke", "#00ADF7")
         .attr("stroke-width", "4")
         .attr("transform", "translate("+63+")")
 }
@@ -225,8 +265,8 @@ var updateCircles = function(target, money, lengths)
              {
                 return y1Line(entry.Big_Three)
         })
-        .attr("r", 5)
-        .attr("fill", "#b2df8a")
+        .attr("r", 6)
+        .attr("fill", "#5DCD47")
         .attr("transform", "translate("+63+")")
    
     
@@ -258,8 +298,8 @@ var updateCircles = function(target, money, lengths)
              {
                 return y1Line(entry.Big_Five)
         })
-        .attr("r", 5)
-        .attr("fill", "#33a02c")
+        .attr("r", 6)
+        .attr("fill", "#098400")
         .attr("transform", "translate("+63+")"); 
     
     
@@ -291,7 +331,7 @@ var updateCircles = function(target, money, lengths)
              {
                 return y2Line(entry.Financial_Knowledge)
         })
-        .attr("r", 5)
+        .attr("r", 6)
         .attr("fill", "#1f78b4")
         .attr("transform", "translate("+63+")"); 
     
@@ -323,10 +363,9 @@ var updateCircles = function(target, money, lengths)
              {
                 return y2Line(entry.Financial_Matters)
         })
-        .attr("r", 5)
-        .attr("fill", "#a6cee3")
+        .attr("r", 6)
+        .attr("fill", "#00ADF7")
         .attr("transform", "translate("+63+")");     
-
 }
 
 
@@ -419,12 +458,12 @@ var updateAxesLines = function(target,xScale,y1Line,y2Line)
         .call(yRight)
 }
 
-var legend = function(target, lengths)
+var legendLines = function(target, lengths)
 {
     var legend = d3.select(target)
         .append("g")
         .classed("legend", true)
-        .attr("transform", "translate("+(lengths.graph.width+lengths.margins.left+30)+","+(lengths.margins.top)+")")
+        .attr("transform", "translate("+(lengths.graph.width+lengths.margins.left+50)+","+(lengths.margins.top)+")");
     
     var entries = legend.selectAll("g")
         .data(["Percentage Correctness on Big 3 Financial Questions", "Percentage Correctness on Big 5 Financial Questions", "Average Personal Rating on Financial Knowledge", "Average Personal Rating on Handling Financial Matters"])
@@ -434,55 +473,256 @@ var legend = function(target, lengths)
     
     //big 3
     entries.append("rect")
-        .attr("width", 10)
-        .attr("height", 10)
-        .attr("fill", "#b2df8a")
-        .attr("transform", "translate("+0+","+(36)+")");
+        .attr("width", 11)
+        .attr("height", 11)
+        .attr("fill", "#5DCD47")
+        .attr("class", "threeLegend")
+        .attr("transform", "translate("+0+","+(36)+")")
+        .on("click", function(money)
+            {
+                var on = d3.select(".threeLegend")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select(".threeLegend")
+                            .classed("off", false);
+                        d3.selectAll("#threeCircle")
+                            .classed("off", true);
+                        d3.selectAll("#big_ThreeLine")
+                            .classed("off", true);
+                    }
+                else
+                    {
+                        d3.select(".threeLegend")
+                            .classed("off", true);
+                        d3.selectAll("#threeCircle")
+                            .classed("off", false);
+                        d3.selectAll("#big_ThreeLine")
+                            .classed("off", false);
+                    };
+            })
 
     
     entries.append("text")
         .text("Percentage Correctness on Big 3 Financial Questions")
         .attr("x", 15)
         .attr("y", 46)
-        .attr("fill", "#b2df8a")
+        .attr("fill", "#5DCD47")
+        .attr("class", "threeLegend")
+        .on("click", function(money)
+            {
+                var on = d3.select(".threeLegend")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select(".threeLegend")
+                            .classed("off", false);
+                        d3.selectAll("#threeCircle")
+                            .classed("off", true);
+                        d3.selectAll("#big_ThreeLine")
+                            .classed("off", true);
+                    }
+                else
+                    {
+                        d3.select(".threeLegend")
+                            .classed("off", true);
+                        d3.selectAll("#threeCircle")
+                            .classed("off", false);
+                        d3.selectAll("#big_ThreeLine")
+                            .classed("off", false);
+                    };
+            })
     
     //big 5
     entries.append("rect")
-        .attr("width", 10)
-        .attr("height", 10)
-        .attr("fill", "#33a02c")
+        .attr("width", 11)
+        .attr("height", 11)
+        .attr("fill", "#098400")
+        .attr("class", "fiveLegend")
         .attr("transform", "translate("+0+","+(54)+")")
+        .on("click", function(money)
+            {
+                var on = d3.select(".fiveLegend")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select(".fiveLegend")
+                            .classed("off", false);
+                        d3.selectAll("#fiveCircle")
+                            .classed("off", true);
+                        d3.selectAll("#big_FiveLine")
+                            .classed("off", true);
+                    }
+                else
+                    {
+                        d3.select(".fiveLegend")
+                            .classed("off", true);
+                        d3.selectAll("#fiveCircle")
+                            .classed("off", false);
+                        d3.selectAll("#big_FiveLine")
+                            .classed("off", false);
+                    };
+            })
     
     entries.append("text")
         .text("Percentage Correctness on Big 5 Financial Questions")
         .attr("x", 15)
         .attr("y", 64)
-        .attr("fill", "#33a02c")
+        .attr("fill", "#098400")
+        .attr("class", "fiveLegend")
+        .on("click", function(money)
+            {
+                var on = d3.select(".fiveLegend")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select(".fiveLegend")
+                            .classed("off", false);
+                        d3.selectAll("#fiveCircle")
+                            .classed("off", true);
+                        d3.selectAll("#big_FiveLine")
+                            .classed("off", true);
+                    }
+                else
+                    {
+                        d3.select(".fiveLegend")
+                            .classed("off", true);
+                        d3.selectAll("#fiveCircle")
+                            .classed("off", false);
+                        d3.selectAll("#big_FiveLine")
+                            .classed("off", false);
+                    };
+            });
     
     //financial knowledge
     entries.append("rect")
-        .attr("width", 10)
-        .attr("height", 10)
-        .attr("fill", "#a6cee3")
+        .attr("width", 11)
+        .attr("height", 11)
+        .attr("fill", "#00ADF7")
+        .attr("class", "knowLegend")
+        .on("click", function(money)
+            {
+                var on = d3.select(".knowLegend")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select(".knowLegend")
+                            .classed("off", false);
+                        d3.selectAll("#matCircle")
+                            .classed("off", true);
+                        d3.selectAll("#MatLine")
+                            .classed("off", true);
+                    }
+                else
+                    {
+                        d3.select(".knowLegend")
+                            .classed("off", true);
+                        d3.selectAll("#matCircle")
+                            .classed("off", false);
+                        d3.selectAll("#MatLine")
+                            .classed("off", false);
+                    };
+            });
     
     entries.append("text")
         .text("Average Personal Rating on Financial Knowledge")
         .attr("x", 15)
         .attr("y", 10)
-        .attr("fill", "#a6cee3")
+        .attr("fill", "#00ADF7")
+        .attr("class", "knowLegend")
+        .on("click", function(money)
+            {
+                var on = d3.select(".knowLegend")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select(".knowLegend")
+                            .classed("off", false);
+                        d3.selectAll("#matCircle")
+                            .classed("off", true);
+                        d3.selectAll("#MatLine")
+                            .classed("off", true);
+                    }
+                else
+                    {
+                        d3.select(".knowLegend")
+                            .classed("off", true);
+                        d3.selectAll("#matCircle")
+                            .classed("off", false);
+                        d3.selectAll("#MatLine")
+                            .classed("off", false);
+                    };
+            });
+
     
     //financial matters
     entries.append("rect")
-        .attr("width", 10)
-        .attr("height", 10)
+        .attr("width", 11)
+        .attr("height", 11)
         .attr("fill", "#1f78b4")
         .attr("transform", "translate("+0+","+(18)+")")
+        .attr("class", "matLegend")
+        .on("click", function(money)
+            {
+                var on = d3.select(".matLegend")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select(".matLegend")
+                            .classed("off", false);
+                        d3.selectAll("#knowCircle")
+                            .classed("off", true);
+                        d3.selectAll("#KnowLine")
+                            .classed("off", true);
+                    }
+                else
+                    {
+                        d3.select(".matLegend")
+                            .classed("off", true);
+                        d3.selectAll("#knowCircle")
+                            .classed("off", false);
+                        d3.selectAll("#KnowLine")
+                            .classed("off", false);
+                    };
+            });
 
     entries.append("text")
         .text("Average Personal Rating on Handling Financial Matters")
         .attr("x", 15)
         .attr("y", 28)
         .attr("fill", "#1f78b4")
+        .attr("class", "matLegend")
+        .on("click", function(money)
+            {
+                var on = d3.select(".knowLegend")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select(".knowLegend")
+                            .classed("off", false);
+                        d3.selectAll("#knowCircle")
+                            .classed("off", true);
+                        d3.selectAll("#KnowLine")
+                            .classed("off", true);
+                    }
+                else
+                    {
+                        d3.select(".knowLegend")
+                            .classed("off", true);
+                        d3.selectAll("#knowCircle")
+                            .classed("off", false);
+                        d3.selectAll("#KnowLine")
+                            .classed("off", false);
+                    };
+            });
 }
 
 var drawxLines = function(target, money, lengths)
@@ -752,7 +992,7 @@ var initLineGraph = function(target, money)
     updateLines(target,money,lengths);
     drawxLines(target, money, lengths);
     updateCircles(target,money,lengths);
-    legend(target,lengths);
+    legendLines(target,lengths);
 };
 
 var clearpLines = function(target, money)
@@ -765,6 +1005,7 @@ var clearRect = function(target,money)
     d3.selectAll(".barChart")
         .remove();
 }
+
 
 var setButtons = function(target, money)
 {
@@ -846,16 +1087,16 @@ var updateRects = function(target,money,lengths)
                 if(on)
                     {
                         d3.select("#big_Three")
-                            .classed("off", true);
-                        d3.selectAll("rect")
-                            .classed("off", true);
+                            .classed("off", false);
+                        d3.selectAll("#big_Five, #financial, #knowledge")
+                            .classed("off", false);
                     }
                 else
                     {
                         d3.select("#big_Three")
                             .classed("off", false);
-                        d3.selectAll("rect")
-                            .classed("off", false);
+                        d3.selectAll("#big_Five, #financial, #knowledge")
+                            .classed("off", true);
                     };
             })
         .transition()
@@ -875,7 +1116,7 @@ var updateRects = function(target,money,lengths)
             })
         .attr("rx", 2)
         .attr("ry", 2)
-        .attr("fill", "#b2df8a")
+        .attr("fill", "#5DCD47")
         .attr("stroke", "black")
 
     
@@ -898,6 +1139,26 @@ var updateRects = function(target,money,lengths)
     d3.select(target)
         .select(".graph #big_Five")
         .selectAll("rect")
+        .on("click", function(money)
+            {
+                var on = d3.select("#big_Five")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select("#big_Five")
+                            .classed("off", false);
+                        d3.selectAll("#big_Three, #financial, #knowledge")
+                            .classed("off", false);
+                    }
+                else
+                    {
+                        d3.select("#big_Five")
+                            .classed("off", false);
+                        d3.selectAll("#big_Three, #financial, #knowledge")
+                            .classed("off", true);
+                    };
+            })
         .transition()
         .duration(dur)
         .attr("x", function(entry)
@@ -915,7 +1176,7 @@ var updateRects = function(target,money,lengths)
             })
         .attr("rx", 2)
         .attr("ry", 2)
-        .attr("fill", "#33a02c")
+        .attr("fill", "#098400")
         .attr("stroke", "black");   
 
     
@@ -937,6 +1198,26 @@ var updateRects = function(target,money,lengths)
     d3.select(target)
         .select(".graph #financial")
         .selectAll("rect")
+        .on("click", function(money)
+            {
+                var on = d3.select("#financial")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select("#financial")
+                            .classed("off", false);
+                        d3.selectAll("#big_Five, #big_Three, #knowledge")
+                            .classed("off", false);
+                    }
+                else
+                    {
+                        d3.select("#financial")
+                            .classed("off", false);
+                        d3.selectAll("#big_Five, #big_Three, #knowledge")
+                            .classed("off", true);
+                    };
+            })
         .transition()
         .duration(dur)
         .attr("x", function(entry)
@@ -977,6 +1258,26 @@ var updateRects = function(target,money,lengths)
     d3.select(target)
         .select(".graph #knowledge")
         .selectAll("rect")
+        .on("click", function(money)
+            {
+                var on = d3.select("#knowledge")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select("#knowledge")
+                            .classed("off", false);
+                        d3.selectAll("#big_Five, #financial, #big_Three")
+                            .classed("off", false);
+                    }
+                else
+                    {
+                        d3.select("#knowledge")
+                            .classed("off", false);
+                        d3.selectAll("#big_Five, #financial, #big_Three")
+                            .classed("off", true);
+                    };
+            })
         .transition()
         .duration(dur)
         .attr("x", function(entry)
@@ -994,7 +1295,7 @@ var updateRects = function(target,money,lengths)
                     })
         .attr("rx", 2)
         .attr("ry", 2)
-        .attr("fill", "#a6cee3")
+        .attr("fill", "#00ADF7")
         .attr("stroke", "black");   
 
 };
@@ -1044,6 +1345,243 @@ var updateAxesHist = function(target,xBase,y1Hist,y2Hist)
         .call(yRight)
 }
 
+var legendRects = function(target, lengths)
+{
+    var legend = d3.select(target)
+        .append("g")
+        .classed("legend", true)
+        .attr("transform", "translate("+(lengths.graph.width+lengths.margins.left+50)+","+(lengths.margins.top)+")");
+    
+    var entries = legend.selectAll("g")
+        .data(["Percentage Correctness on Big 3 Financial Questions", "Percentage Correctness on Big 5 Financial Questions", "Average Personal Rating on Financial Knowledge", "Average Personal Rating on Handling Financial Matters"])
+        .enter()
+        .append("g")
+        .classed("legendEntry", true);
+    
+    //big 3
+    entries.append("rect")
+        .attr("width", 11)
+        .attr("height", 11)
+        .attr("fill", "#5DCD47")
+        .attr("class", "threeLegend")
+        .attr("transform", "translate("+0+","+(36)+")")
+        .on("click", function(money)
+            {
+                var on = d3.select(".threeLegend")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select(".threeLegend")
+                            .classed("off", false);
+                        d3.selectAll("#big_Three")
+                            .classed("off", true);
+                        
+                    }
+                else
+                    {
+                        d3.select(".threeLegend")
+                            .classed("off", true);
+                        d3.selectAll("#big_Three")
+                            .classed("off", false);
+                        d3.selectAll("#big_Five")
+                            .classed("off", false);
+                    };
+            });
+
+    
+    entries.append("text")
+        .text("Percentage Correctness on Big 3 Financial Questions")
+        .attr("x", 15)
+        .attr("y", 46)
+        .attr("fill", "#5DCD47")
+        .attr("class", "threeLegend")
+        .on("click", function(money)
+            {
+                var on = d3.select(".threeLegend")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select(".threeLegend")
+                            .classed("off", false);
+                        d3.selectAll("#big_Three")
+                            .classed("off", true);
+                    }
+                else
+                    {
+                        d3.select(".threeLegend")
+                            .classed("off", true);
+                        d3.selectAll("#big_Three")
+                            .classed("off", false);
+                    };
+            })
+    
+    //big 5
+    entries.append("rect")
+        .attr("width", 11)
+        .attr("height", 11)
+        .attr("fill", "#098400")
+        .attr("class", "fiveLegend")
+        .attr("transform", "translate("+0+","+(54)+")")
+        .on("click", function(money)
+            {
+                var on = d3.select(".fiveLegend")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select(".fiveLegend")
+                            .classed("off", false);
+                        d3.selectAll("#big_Five")
+                            .classed("off", true);
+                    }
+                else
+                    {
+                        d3.select(".fiveLegend")
+                            .classed("off", true);
+                        d3.selectAll("#big_Five")
+                            .classed("off", false);
+                    };
+            })
+    
+    entries.append("text")
+        .text("Percentage Correctness on Big 5 Financial Questions")
+        .attr("x", 15)
+        .attr("y", 64)
+        .attr("fill", "#098400")
+        .attr("class", "fiveLegend")
+        .on("click", function(money)
+            {
+                var on = d3.select(".fiveLegend")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select(".fiveLegend")
+                            .classed("off", false);
+                        d3.selectAll("#big_Five")
+                            .classed("off", true);
+                    }
+                else
+                    {
+                        d3.select(".fiveLegend")
+                            .classed("off", true);
+                        d3.selectAll("#big_Five")
+                            .classed("off", false);
+                    };
+            })
+    
+    //financial knowledge
+    entries.append("rect")
+        .attr("width", 11)
+        .attr("height", 11)
+        .attr("fill", "#00ADF7")
+        .attr("class", "knowLegend")
+        .on("click", function(money)
+            {
+                var on = d3.select(".knowLegend")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select(".knowLegend")
+                            .classed("off", false);
+                        d3.selectAll("#knowledge")
+                            .classed("off", true);
+                    }
+                else
+                    {
+                        d3.select(".knowLegend")
+                            .classed("off", true);
+                        d3.selectAll("#knowledge")
+                            .classed("off", false);
+                    };
+            })
+    
+    entries.append("text")
+        .text("Average Personal Rating on Financial Knowledge")
+        .attr("x", 15)
+        .attr("y", 10)
+        .attr("fill", "#00ADF7")
+        .attr("class", "knowLegend")
+        .on("click", function(money)
+            {
+                var on = d3.select(".knowLegend")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select(".knowLegend")
+                            .classed("off", false);
+                        d3.selectAll("#knowledge")
+                            .classed("off", true);
+                    }
+                else
+                    {
+                        d3.select(".knowLegend")
+                            .classed("off", true);
+                        d3.selectAll("#knowledge")
+                            .classed("off", false);
+                    };
+            })
+    
+    //financial matters
+    entries.append("rect")
+        .attr("width", 11)
+        .attr("height", 11)
+        .attr("fill", "#1f78b4")
+        .attr("transform", "translate("+0+","+(18)+")")
+        .attr("class", "finLegend")
+        .on("click", function(money)
+            {
+                var on = d3.select(".finLegend")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select(".finLegend")
+                            .classed("off", false);
+                        d3.selectAll("#financial")
+                            .classed("off", true);
+                    }
+                else
+                    {
+                        d3.select(".finLegend")
+                            .classed("off", true);
+                        d3.selectAll("#financial")
+                            .classed("off", false);
+                    };
+            })
+
+    entries.append("text")
+        .text("Average Personal Rating on Handling Financial Matters")
+        .attr("x", 15)
+        .attr("y", 28)
+        .attr("fill", "#1f78b4")
+        .attr("class", "finLegend")
+        .on("click", function(money)
+            {
+                var on = d3.select(".finLegend")    
+                            .classed("off");
+                
+                if(on)
+                    {
+                        d3.select(".finLegend")
+                            .classed("off", false);
+                        d3.selectAll("#financial")
+                            .classed("off", true);
+                    }
+                else
+                    {
+                        d3.select(".finLegend")
+                            .classed("off", true);
+                        d3.selectAll("#financial")
+                            .classed("off", false);
+                    };
+            })
+}
+
 var initHist = function(target, money)
 {
     var screen = {width:1500, height:600}
@@ -1071,6 +1609,7 @@ var initHist = function(target, money)
     
     initAxesHist(lengths, target);
     updateRects(target, money, lengths);
+    legendRects(target,lengths);
 };
 
 
