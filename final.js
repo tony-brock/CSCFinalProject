@@ -96,26 +96,6 @@ var updateLines = function(target, money, lengths)
         .select(".graph #big_ThreeLine")
         .selectAll("path")
         .datum(money)
-        .on("click", function(money)
-            {
-                var on = d3.select("#big_ThreeLine, #threeCircle")    
-                            .classed("off");
-                
-                if(on)
-                    {
-                        d3.select("#big_ThreeLine, #threeCircle")
-                            .classed("off", false);
-                        d3.selectAll("#big_FiveLine, #KnowLine, #MatLine, #fiveCircle, #knowCircle, #matCircle")
-                            .classed("off", false);
-                    }
-                else
-                    {
-                        d3.select("#big_ThreeLine, #threeCircle")
-                            .classed("off", false);
-                        d3.selectAll("#big_FiveLine, #KnowLine, #MatLine, #fiveCircle, #knowCircle, #matCircle")
-                            .classed("off", true);
-                    };
-            })
         .transition()
         .duration(dur)
         .attr("d", lineGeneratorThree)
@@ -144,26 +124,6 @@ var updateLines = function(target, money, lengths)
         .select(".graph #big_FiveLine")
         .selectAll("path")
         .datum(money)
-        .on("click", function(money)
-            {
-                var on = d3.select("#big_FiveLine")    
-                            .classed("off");
-                
-                if(on)
-                    {
-                        d3.select("#big_FiveLine, #fiveCircle")
-                            .classed("off", false);
-                        d3.selectAll("#big_ThreeLine, #KnowLine, #MatLine, #threeCircle, #knowCircle, #matCircle")
-                            .classed("off", false);
-                    }
-                else
-                    {
-                        d3.select("#big_FiveLine, #fiveCircle")
-                            .classed("off", false);
-                        d3.selectAll("#big_ThreeLine, #KnowLine, #MatLine, #threeCircle, #knowCircle, #matCircle")
-                            .classed("off", true);
-                    };
-            })
         .transition()
         .duration(dur)
         .attr("d", lineGeneratorFive)
@@ -463,7 +423,7 @@ var legendLines = function(target, lengths)
     var legend = d3.select(target)
         .append("g")
         .classed("legend", true)
-        .attr("transform", "translate("+(lengths.graph.width+lengths.margins.left+50)+","+(lengths.margins.top)+")");
+        .attr("transform", "translate("+(lengths.graph.width+lengths.margins.left+37)+","+(lengths.margins.top)+")");
     
     var entries = legend.selectAll("g")
         .data(["Percentage Correctness on Big 3 Financial Questions", "Percentage Correctness on Big 5 Financial Questions", "Average Personal Rating on Financial Knowledge", "Average Personal Rating on Handling Financial Matters"])
@@ -1350,7 +1310,7 @@ var legendRects = function(target, lengths)
     var legend = d3.select(target)
         .append("g")
         .classed("legend", true)
-        .attr("transform", "translate("+(lengths.graph.width+lengths.margins.left+50)+","+(lengths.margins.top)+")");
+        .attr("transform", "translate("+(lengths.graph.width+lengths.margins.left+37)+","+(lengths.margins.top)+")");
     
     var entries = legend.selectAll("g")
         .data(["Percentage Correctness on Big 3 Financial Questions", "Percentage Correctness on Big 5 Financial Questions", "Average Personal Rating on Financial Knowledge", "Average Personal Rating on Handling Financial Matters"])

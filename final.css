@@ -32,11 +32,11 @@ h1 {
 }
 
 rect:hover {
-    opacity:.3;
+    opacity:.5;
 }
 
 #big_ThreeLine:hover, #big_FiveLine:hover, #knowLine:hover, #matLine:hover {
-    opacity:.3
+    opacity:.5
 }
 
 text {
@@ -61,7 +61,16 @@ g#graphtitle text {
 }
 
 text.threelegend, text.fiveLegend, text.knowLegend, text.matLegend, text.finLegend {
-    font-size:13.35px;
+    font-size:13.5px;
+    font-family: 'Inconsolata', monospace;
+}
+
+button {
+    font-family: 'Inconsolata', monospace;
+}
+
+a {
+    margin:10px;
     font-family: 'Inconsolata', monospace;
 }
 
